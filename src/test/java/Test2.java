@@ -83,6 +83,8 @@ public class Test2 {
         WebElement result =  driver.findElement(By.id("sc-subtotal-amount-activecart"));
         System.out.println(result.getText());
         wait.until(ExpectedConditions.textToBe(By.id("sc-subtotal-amount-activecart"),"EUR 99,98"));
+        result =  driver.findElement(By.id("sc-subtotal-amount-activecart"));
+        Assert.assertThat(result.getText(),Is.is("EUR 99,98"));
         System.out.println("OK");
 
 
