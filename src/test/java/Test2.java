@@ -12,6 +12,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
+
 public class Test2 {
 
     WebDriver driver;
@@ -27,7 +29,6 @@ public class Test2 {
     public void t1()
     {
         /*
-        2.	Ouvrir le lien “Nintendo Switch” qui se trouve dans le menu Parcourir categories -> Jeux Videos et consoles
         3.	Ouvrir la categorie Jeux
         4.	Dans la liste de resultats, ouvrir le N1 de ventes (Mario Kart)
         5.	Ajouter le jeu au panier
@@ -48,12 +49,45 @@ public class Test2 {
         WebElement link =  driver.findElement(By.xpath("//span[text()=\"Nintendo Switch\"]"));
         link.click();
         //
-/*
-        WebElement page =  driver.findElement(By.className("bxw-pageheader__title__subtext"));
-        WebElement h1Element =  page.findElement(By.tagName("h1"));
-        Assert.assertThat(h1Element.getText(), Is.is("LIVRES"));
-        System.out.println(" Text :"+h1Element.getText());
-        */
+
+        //WebElement jeuxElement =  driver.findElement(By.xpath("//span[text()=\"Jeux\"]"));
+        WebElement jeuxElement =  driver.findElement(By.linkText("Jeux"));
+        jeuxElement.click();
+
+        //mainResults
+        WebElement results =  driver.findElement(By.id("mainResults"));
+        List <WebElement> ListResults =  results.findElements(By.tagName("li"));
+        ListResults.get(0).findElement(By.tagName("h2")).click();
+
+
+        //add-to-cart-button
+        WebElement btnAddToCart =  driver.findElement(By.id("add-to-cart-button"));
+        btnAddToCart.click();
+
+        //hlb-view-cart-announce
+        WebElement btnViewCart =  driver.findElement(By.id("hlb-view-cart-announce"));
+        btnViewCart.click();
+
+        WebElement comboQte =  driver.findElement(By.id("a-autoid-0"));
+        comboQte.click();
+        WebElement drop = driver.findElement(By.id("a-popover-1"));//By.xpath("//a[text()=\"2\"]"));
+        //WebElement qte2 = drop.findElement(By.id("dropdown2_1"));//////a[data-value="{"stringVal":"2"}"]
+        String hidden= drop.getAttribute("aria-hidden");
+        System.out.println("hidden :"+hidden);
+        WebElement qte2 = drop.findElement(By.linkText("2"));
+        //data-value="{"stringVal":"2"}"
+        actions.moveToElement(qte2);
+        actions.click();
+        actions.build().perform();
+
+        WebElement result =  driver.findElement(By.id("sc-subtotal-amount-activecart"));
+        System.out.println(result.getText());
+        wait.until(ExpectedConditions.textToBe(By.id("sc-subtotal-amount-activecart"),"EUR 99,98"));
+        result =  driver.findElement(By.id("sc-subtotal-amount-activecart"));
+        Assert.assertThat(result.getText(),Is.is("EUR 99,98"));
+        System.out.println("OK");
+
+
     }
 
 
